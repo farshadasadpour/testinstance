@@ -1,18 +1,27 @@
+---
 - name: Get public IP information using ip-api.com
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Get public IP information using ip-api.com
       ansible.builtin.uri:
         url: "http://ip-api.com/json"
         return_content: yes
       register: ip_api_response
+
     - name: Print the public IP information
       ansible.builtin.debug:
         var: ip_api_response.json
-- name: Get public IP information using ip-api.com
-       delegate_to: localhost
+
+    - name: Get public IP information using ip-api.com (delegated)
+      delegate_to: localhost
       ansible.builtin.uri:
         url: "http://ip-api.com/json"
         return_content: yes
-      register: ip_api_response
-    - name: Print the public IP information
-       delegate_to: localhost
+      register: ip_api_response_delegate
+
+    - name: Print the public IP information (delegated)
+      delegate_to: localhost
       ansible.builtin.debug:
-        var: ip_api_response.json
+        var: ip_api_response_delegate.json
